@@ -1,20 +1,33 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StatusBar, Text, View } from 'react-native';
+import styles from './styles/styles';
+import React, { useState } from 'react';
+import { Pressable } from 'react-native';
 
 export default function App() {
+
+
+  const values = ["Option1", "Option2", "Option3", "Option4"];
+  const [value, setValue] = useState(values[0]);
+
   return (
     <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
+      <Text style={styles.label}>Select one option:</Text>
+      <ButtonSelector values={values} selectedValue={value} selectionChanged={setValue} />
+      <Text style={styles.result}>You selected value: {value}</Text>
     </View>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+function ButtonSelector({ values, selectedValue, selectionChanged }) {
+
+    return (
+        <View style={styles.buttonrow}>
+            {values.map((value) => (
+                <Pressable key={value} onPress={() => selectionChanged(value)}>
+                    <Text
+                    style={[styles.button, value==selectedValue && styles.selectedButton]}>{value}</Text>
+                </Pressable>
+            ))}
+        </View>
+    );
+}
